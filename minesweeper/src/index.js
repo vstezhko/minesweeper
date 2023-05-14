@@ -2,7 +2,8 @@ import './index.html';
 import './styles.scss';
 import drawUI from "./js/drawUI";
 import settings from "./js/settings";
-import drowUI from "./js/drawUI";
+import {gameTime} from "./js/gameTime";
+import {loseGame} from "./js/loseGame";
 
 window.onload = () => {
   drawUI()
@@ -81,6 +82,7 @@ window.onload = () => {
   }
 
   function setMinesToPlaces(){
+    gameTime()
     isMineSet = true;
     let minesToPlace = settings.minesCount;
     while (minesToPlace > 0) {
@@ -149,6 +151,10 @@ window.onload = () => {
             if (!cell.tagged && !cell.opened) {
               cell.opened = true;
             }
+
+            if (cell.mined) {
+              loseGame()
+            }
           }
 
           if (event.button === 2) {
@@ -176,6 +182,5 @@ window.onload = () => {
     drawField();
   });
 
-// Инициализация и отрисовка поля
   drawField();
 };

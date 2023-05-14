@@ -57,3 +57,37 @@ p {
   }
 }
 
+.popup {
+  top: 0;
+  left: 0;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.popup_body {
+  padding: 4rem;
+  background-color: palevioletred;
+}
+
+.popup_variants {
+  margin-top: 2rem;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 1rem;
+
+  h5 {
+    transition: 0.3s;
+    cursor: pointer;
+  }
+
+  h5:hover {
+    transform: scale(1.1);
+  }
+}
+
