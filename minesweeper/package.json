@@ -1,0 +1,46 @@
+{
+  "name": "virtual-keyboard",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "webpack serve",
+    "dev": "webpack --define-process-env-node-env development",
+    "build": "webpack --define-process-env-node-env production",
+    "clear": "rd /s /q dist",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/core": "^7.21.4",
+    "@babel/preset-env": "^7.21.4",
+    "babel-loader": "^9.1.2",
+    "copy-webpack-plugin": "^11.0.0",
+    "css-loader": "^6.7.3",
+    "eslint": "^8.39.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-webpack-plugin": "^4.0.1",
+    "gh-pages": "^5.0.0",
+    "html-loader": "^4.2.0",
+    "html-webpack-plugin": "^5.5.0",
+    "image-webpack-loader": "^8.1.0",
+    "mini-css-extract-plugin": "^2.7.5",
+    "postcss": "^8.4.21",
+    "postcss-loader": "^7.2.4",
+    "postcss-preset-env": "^8.3.0",
+    "sass": "^1.61.0",
+    "sass-loader": "^13.2.2",
+    "style-loader": "^3.3.2",
+    "weback": "^0.0.1-security",
+    "webpack": "^5.78.0",
+    "webpack-cli": "^5.1.1",
+    "webpack-dev-server": "^4.13.2"
+  },
+  "dependencies": {
+    "node-polyfill-webpack-plugin": "^2.0.1"
+  }
+}

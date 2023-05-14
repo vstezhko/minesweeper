@@ -1,11 +1,14 @@
 module.exports = {
     "env": {
-        "browser": true
+        "browser": true,
+        "es2021": true
     },
-    extends: [
-        'eslint-config-airbnb-base',
+    "overrides": [
     ],
-    rules: {
-        'linebreak-style': ['error', process.platform === 'win32' ? 'windows' : 'unix'],
+    "parserOptions": {
+        "ecmaVersion": "latest",
+        "sourceType": "module"
+    },
+    "rules": {
     }
-};
+}
