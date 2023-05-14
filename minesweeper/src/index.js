@@ -34,8 +34,6 @@ window.onload = () => {
     }
   }
 
-  console.log(field)
-
   const flagImage = new Image();
   flagImage.src = '/assets/img/flag.png';
 
