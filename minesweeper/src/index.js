@@ -1,6 +1,5 @@
 import './index.html';
 import './styles.scss';
-import {logPlugin} from "@babel/preset-env/lib/debug";
 
 window.onload = () => {
   const canvas = document.createElement('canvas');
@@ -8,7 +7,6 @@ window.onload = () => {
   const context = canvas.getContext('2d');
   let isMineSet = false;
 
-  // Настройки приложения
   const settings = {
     fieldSize: 10,
     cellSize: 40,
@@ -21,7 +19,6 @@ window.onload = () => {
     event.preventDefault();
   });
 
-// Создаем двумерный массив для хранения состояния ячеек
   const field = [];
   for (let row = 0; row < settings.fieldSize; row++) {
     field[row] = [];
@@ -42,7 +39,6 @@ window.onload = () => {
   const flagImage = new Image();
   flagImage.src = '/assets/img/flag.png';
 
-// Рисуем поле
   function drawField() {
     console.log(field)
     for (let row = 0; row < settings.fieldSize; row++) {
@@ -50,7 +46,6 @@ window.onload = () => {
         const cell = field[row][col];
         const {x, y} = cell;
 
-        // Определяем цвет ячейки в зависимости от состояния "clicked"
         let color;
 
         if (cell.opened && cell.mined) {
@@ -65,11 +60,9 @@ window.onload = () => {
           color = 'lightgray';
         }
 
-        // Рисуем прямоугольник для ячейки
         context.fillStyle = color;
         context.fillRect(x, y, settings.cellSize, settings.cellSize);
 
-        // Рисуем границу ячейки
         context.strokeStyle = 'black';
         context.strokeRect(x, y, settings.cellSize, settings.cellSize);
 
