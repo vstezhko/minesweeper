@@ -1,3 +1,5 @@
+import renderMenuBlock from "./renderMenuBlock";
+
 export class Popup {
   constructor(type) {
     this.type = type;
@@ -33,6 +35,9 @@ export class Popup {
 
     newGameBtn.addEventListener('click', ()=>{
       this.removePopup()
+      document.body.removeChild(document.body.querySelector('canvas'))
+      document.body.removeChild(document.body.querySelector('.game-info'))
+      renderMenuBlock()
     })
   }
 }

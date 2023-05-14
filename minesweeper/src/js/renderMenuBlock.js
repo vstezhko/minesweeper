@@ -1,6 +1,6 @@
 import settings from "./settings";
 
-const drawUI = () => {
+const renderMenuBlock = () => {
   const gameInfoLayout = document.createElement('div')
   gameInfoLayout.classList.add('game-info')
   gameInfoLayout.innerHTML =
@@ -23,4 +23,4 @@ const drawUI = () => {
   document.body.append(gameInfoLayout)
 }
 
-export default drawUI;
+export default renderMenuBlock;
