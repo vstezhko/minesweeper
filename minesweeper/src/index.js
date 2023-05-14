@@ -38,7 +38,6 @@ window.onload = () => {
   flagImage.src = '/assets/img/flag.png';
 
   function drawField() {
-    console.log(field)
     for (let row = 0; row < settings.fieldSize; row++) {
       for (let col = 0; col < settings.fieldSize; col++) {
         const cell = field[row][col];
