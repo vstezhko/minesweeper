@@ -1,4 +1,6 @@
 import renderMenuBlock from "./renderMenuBlock";
+import {Game} from "./Game";
+import settings from "./settings";
 
 export class Popup {
   constructor(type) {
@@ -38,6 +40,8 @@ export class Popup {
       document.body.removeChild(document.body.querySelector('canvas'))
       document.body.removeChild(document.body.querySelector('.game-info'))
       renderMenuBlock()
+      const newGame = new Game(settings);
+      newGame.createNewGame()
     })
   }
 }
