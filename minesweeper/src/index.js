@@ -1,17 +1,16 @@
 import './index.html';
 import './styles.scss';
+import drawUI from "./js/drawUI";
+import settings from "./js/settings";
+import drowUI from "./js/drawUI";
 
 window.onload = () => {
+  drawUI()
+  const flagsLeftNode = document.querySelector('.flags-left')
   const canvas = document.createElement('canvas');
   document.body.append(canvas)
   const context = canvas.getContext('2d');
   let isMineSet = false;
-
-  const settings = {
-    fieldSize: 10,
-    cellSize: 40,
-    minesCount: 10,
-  }
 
   canvas.width = settings.cellSize * settings.fieldSize;
   canvas.height = settings.cellSize * settings.fieldSize;
@@ -35,7 +34,7 @@ window.onload = () => {
   }
 
   const flagImage = new Image();
-  flagImage.src = '/assets/img/flag.png';
+  flagImage.src = '/assets/img/flag_icon.png';
 
   function drawField() {
     for (let row = 0; row < settings.fieldSize; row++) {
@@ -153,7 +152,19 @@ window.onload = () => {
           }
 
           if (event.button === 2) {
-            cell.tagged = !cell.tagged;
+            if (settings.flagsLeft > 0 && !cell.tagged) {
+              cell.tagged = !cell.tagged;
+              settings.flagsLeft -= 1
+              flagsLeftNode.innerHTML = settings.flagsLeft;
+              break
+            }
+
+            if (cell.tagged && settings.flagsLeft < 10) {
+              cell.tagged = !cell.tagged;
+              settings.flagsLeft += 1
+              flagsLeftNode.innerHTML = settings.flagsLeft;
+              break
+            }
           }
 
           break;

@@ -6,6 +6,7 @@
 html {
   box-sizing: border-box;
   font-size: 10px;
+  color: white;
   height: 100%;
   width: 100%;
 }
@@ -16,5 +17,43 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
+}
+
+p {
+  font-size: 2rem;
+}
+
+.game-info {
+  width: 100%;
+  padding: 2rem;
+  display: flex;
+  justify-content: center;
+  gap: 3rem;
+  align-items: center;
+  background-color: palevioletred;
+
+  img {
+    width: 3rem;
+    height: 3rem;
+  }
+}
+
+.game-info_info {
+  display: flex;
+  gap: 2rem;
+}
+
+.game-info_flags-left,
+.game-info_time,
+.game-info_quick-settings {
+  display: flex;
+  align-items: center;
+
+  img {
+    width: 3rem;
+    height: 3rem;
+    padding: 0 0.5rem;
+  }
 }
 
