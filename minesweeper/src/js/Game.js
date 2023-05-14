@@ -1,10 +1,9 @@
-import settings from "./settings";
 import {loseGame} from "./loseGame";
 import {gameTime} from "./gameTime";
 
 export class Game {
   constructor(settings) {
-    this.settings = settings;
+    this.settings = {...settings};
     this.field = [];
     this.context = null;
     this.canvas = null;
@@ -14,10 +13,10 @@ export class Game {
   createNewGame() {
     for (let row = 0; row < this.settings.fieldSize; row++) {
       this.field[row] = [];
-      for (let col = 0; col < settings.fieldSize; col++) {
+      for (let col = 0; col < this.settings.fieldSize; col++) {
         this.field[row][col] = {
-          x: col * settings.cellSize,
-          y: row * settings.cellSize,
+          x: col * this.settings.cellSize,
+          y: row * this.settings.cellSize,
           mined: false,
           tagged: false,
           opened: false,
@@ -28,6 +27,7 @@ export class Game {
     console.log(this)
     this.createField()
     this.renderField()
+    this.changeFlagsLeftInfo()
   }
 
   renderField(){
@@ -51,16 +51,16 @@ export class Game {
         }
 
         this.context.fillStyle = color;
-        this.context.fillRect(x, y, settings.cellSize, settings.cellSize);
+        this.context.fillRect(x, y, this.settings.cellSize, this.settings.cellSize);
 
         this.context.strokeStyle = 'black';
-        this.context.strokeRect(x, y, settings.cellSize, settings.cellSize);
+        this.context.strokeRect(x, y, this.settings.cellSize, this.settings.cellSize);
 
         const flagImage = new Image();
         flagImage.src = '/assets/img/flag_icon.png';
 
         if (cell.tagged) {
-          this.context.drawImage(flagImage, x, y, settings.cellSize, settings.cellSize);
+          this.context.drawImage(flagImage, x, y, this.settings.cellSize, this.settings.cellSize);
         }
 
         if (cell.opened && !cell.mined && cell.minesNearby > 0) {
@@ -81,8 +81,8 @@ export class Game {
     this.canvas = document.createElement('canvas');
     document.body.append(this.canvas)
     this.context = this.canvas.getContext('2d');
-    this.canvas.width = settings.cellSize * settings.fieldSize;
-    this.canvas.height = settings.cellSize * settings.fieldSize;
+    this.canvas.width = this.settings.cellSize * this.settings.fieldSize;
+    this.canvas.height = this.settings.cellSize * this.settings.fieldSize;
     this.canvas.addEventListener('contextmenu', function (event) {
       event.preventDefault();
     });

@@ -27,7 +27,6 @@ export class Popup {
     document.body.removeChild(popup)
   }
 
-
   renderPopup() {
     const popup = this.createPopup()
     document.body.append(popup)
@@ -39,9 +38,9 @@ export class Popup {
       this.removePopup()
       document.body.removeChild(document.body.querySelector('canvas'))
       document.body.removeChild(document.body.querySelector('.game-info'))
-      renderMenuBlock()
+      renderMenuBlock();
       const newGame = new Game(settings);
-      newGame.createNewGame()
+      newGame.createNewGame();
     })
   }
 }
