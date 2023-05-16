@@ -5,6 +5,7 @@ const settings = {
   minesCount: 10,
   flagsLeft: 10,
   clicksCount: 0,
+  soundOn: true,
 }
 
 export default settings;

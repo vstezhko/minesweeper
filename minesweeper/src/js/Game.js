@@ -1,5 +1,6 @@
 import {gameTime} from "./gameTime";
 import {endGame} from "./endGame";
+import {playSound} from "./playSound";
 
 export class Game {
   constructor(settings) {
@@ -153,22 +154,26 @@ export class Game {
 
               if (!cell.tagged && !cell.opened) {
                 this.openCell(cell)
+                !cell.mined && playSound('click')
 
                 !this.isMineSet && this.setMinesToPlaces() && this.checkCellsNearby(cell);
                 !cell.mined && this.checkCellsNearby(cell);
               }
 
               if (cell.mined) {
+                playSound('lose')
                 endGame('lose');
                 break
               }
 
               if (this.hideCells === this.settings.minesCount) {
+                playSound('win')
                 endGame('win');
               }
             }
 
             if (event.button === 2) {
+              playSound('tick')
               if (this.settings.flagsLeft > 0 && !cell.tagged) {
                 cell.tagged = !cell.tagged;
                 this.settings.flagsLeft -= 1
