@@ -2,6 +2,24 @@ import renderMenuBlock from "./renderMenuBlock";
 import settings from "./settings";
 import {Game} from "./Game";
 
+const levels = {
+  'easy': {
+    fieldSize: 10,
+    minesCount: 10,
+    cellSize: 40,
+  },
+  'medium': {
+    fieldSize: 15,
+    minesCount: 28,
+    cellSize: 25,
+  },
+  'hard': {
+    fieldSize: 25,
+    minesCount: 60,
+    cellSize: 18,
+  }
+}
+
 export class Popup {
   constructor(type, settings = null) {
     this.type = type;
@@ -33,14 +51,24 @@ export class Popup {
           <div class="popup_body">
             <img class="close-icon" src="assets/img/close_white_24dp.png" alt="close">
             <h3>SETTINGS</h3>
+            
+            <label for="level" class="">Difficulty level</label>
+            <select class="input" id="level" name="level">
+              <option value="easy" ${settings.level === 'easy' ? 'selected' : ''}>easy</option>
+              <option value="medium" ${settings.level === 'medium' ? 'selected' : ''}>medium</option>
+              <option value="hard" ${settings.level === 'hard' ? 'selected' : ''}>hard</option>
+              <option value="custom" ${settings.level === 'custom' ? 'selected' : ''}>custom</option>
+            </select> 
+            
+            <hr>
           
-            <label for="fieldSize" class="">Field size</label>
-            <input id="fieldSize" type="number" max="20" min="3" value=${this.settings.fieldSize}>
+            <label for="fieldSize">Field size</label>
+            <input class="input" id="fieldSize" type="number" max="20" min="3" value=${this.settings.fieldSize}>
           
             <hr>
           
             <label for="minesCount" class="">Mines count</label>
-            <input id="minesCount" type="number" max="20" min="1" value=${this.settings.minesCount}>
+            <input class="input" id="minesCount" type="number" max="20" min="1" value=${this.settings.minesCount}>
           
           </div>
       `
@@ -75,13 +103,43 @@ export class Popup {
       startNewGame()
     })
 
-    const inputs = document.querySelectorAll('input');
+    const inputs = document.querySelectorAll('.input');
     inputs.length &&
       inputs.forEach((input) => {
-        input.addEventListener('click', (e) => {
-          e.stopPropagation();
-          settings[e.target.id] = +e.target.value;
-        })
+
+          input.addEventListener('click', (e) => {
+            e.stopPropagation();
+          })
+
+          input.addEventListener('change', (e) => {
+            if (input.nodeName === 'INPUT') {
+              settings[e.target.id] = +e.target.value;
+              settings.flagsLeft = settings.minesCount;
+              settings.level = 'custom';
+              const options = document.querySelectorAll('option');
+              options.forEach(option => {
+                if (option.value === settings.level) {
+                  option.selected = true;
+                } else {
+                  option.removeAttribute('selected');
+                }
+              })
+            }
+
+            if (input.nodeName === 'SELECT') {
+              settings.level = input.value;
+              settings.fieldSize = levels[input.value].fieldSize;
+              settings.minesCount = levels[input.value].minesCount;
+              settings.cellSize = levels[input.value].cellSize;
+              settings.flagsLeft = levels[input.value].minesCount;
+
+              inputs.forEach((i) => {
+                if (i.nodeName === 'INPUT') {
+                  i.value = +settings[i.id]
+                }
+              })
+            }
+          })
       })
 
     const closeIcon = document.querySelector('.close-icon')
@@ -93,7 +151,6 @@ export class Popup {
 
     inputs.length &&
       popup.addEventListener('click', (e) => {
-        console.log(inputs)
         startNewGame()
       })
   }

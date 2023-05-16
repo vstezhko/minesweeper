@@ -3,6 +3,7 @@ const settings = {
   fieldSize: 10,
   cellSize: 40,
   minesCount: 10,
+  level: 'easy',
   flagsLeft: 10,
   clicksCount: 0,
   soundOn: true,
