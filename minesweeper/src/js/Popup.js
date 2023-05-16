@@ -63,12 +63,12 @@ export class Popup {
             <hr>
           
             <label for="fieldSize">Field size</label>
-            <input class="input" id="fieldSize" type="number" max="20" min="3" value=${this.settings.fieldSize}>
+            <input class="input" id="fieldSize" type="number" max="25" min="5" value=${this.settings.fieldSize}>
           
             <hr>
           
             <label for="minesCount" class="">Mines count</label>
-            <input class="input" id="minesCount" type="number" max="20" min="1" value=${this.settings.minesCount}>
+            <input class="input" id="minesCount" type="number" max="99" min="10" value=${this.settings.minesCount}>
           
           </div>
       `
