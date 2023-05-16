@@ -15,6 +15,10 @@ const renderMenuBlock = () => {
           <img src="assets/img/clock_icon.png" alt="clock">
           <p class="clock">000</p>
         </div>
+        <div class="game-info_clicks">
+          <img src="assets/img/click.png" alt="click">
+          <p class="clicks">000</p>
+        </div>
       </div>
       <div class="game-info_quick-settings">
         <img src="assets/img/volume_up_white_24dp.png" alt="volume">

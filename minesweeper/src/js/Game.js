@@ -106,6 +106,10 @@ export class Game {
           if (mouseX >= x && mouseX < x + this.settings.cellSize && mouseY >= y && mouseY < y + this.settings.cellSize) {
 
             if (event.button === 0) {
+
+              this.settings.clicksCount += 1
+              this.changeClickCountInfo()
+
               if (!cell.tagged && !cell.opened) {
                 cell.opened = true;
               }
@@ -204,5 +208,10 @@ export class Game {
   changeFlagsLeftInfo() {
     const flagsLeftNode = document.querySelector('.flags-left')
     flagsLeftNode.innerHTML = this.settings.flagsLeft;
+  }
+
+  changeClickCountInfo() {
+    const clicks = document.querySelector('.clicks')
+    clicks.innerHTML = this.settings.clicksCount;
   }
 }
