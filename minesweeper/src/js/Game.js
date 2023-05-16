@@ -78,6 +78,43 @@ export class Game {
     }
   }
 
+  checkCellsNearby(cell) {
+
+    if (cell.minesNearby !== 0) {
+      cell.opened = true;
+      return
+    }
+
+    const {x, y} = cell;
+    const b = x / this.settings.cellSize;
+    const a = y / this.settings.cellSize;
+
+    console.log(a, b)
+    console.log(this.field[a][b])
+
+    const checkingCells = [
+      this.field[a - 1] !== undefined ? this.field[a - 1][b - 1] : undefined,
+      this.field[a - 1] !== undefined ? this.field[a - 1][b] : undefined,
+      this.field[a - 1] !== undefined  ? this.field[a - 1][b + 1] : undefined,
+      this.field[a] !== undefined  ? this.field[a][b - 1] : undefined,
+      this.field[a] !== undefined  ? this.field[a][b + 1] : undefined,
+      this.field[a + 1] !== undefined  ? this.field[a + 1][b - 1] : undefined,
+      this.field[a + 1] !== undefined  ? this.field[a + 1][b] : undefined,
+      this.field[a + 1] !== undefined  ? this.field[a + 1][b + 1] : undefined
+    ]
+
+    checkingCells.forEach((cell) => {
+      try {
+        if (cell.minesNearby === 0 && !cell.opened) {
+          cell.opened = true;
+          this.checkCellsNearby(cell)
+        } else {
+          cell.opened = true;
+        }
+      } catch {}
+    })
+  }
+
   createField() {
     this.canvas = document.createElement('canvas');
     document.body.append(this.canvas)
@@ -112,6 +149,10 @@ export class Game {
 
               if (!cell.tagged && !cell.opened) {
                 cell.opened = true;
+
+                !this.isMineSet && this.setMinesToPlaces() && this.checkCellsNearby(cell);
+                !cell.mined && this.checkCellsNearby(cell);
+
               }
 
               if (cell.mined) {
@@ -146,7 +187,6 @@ export class Game {
         }
       }
 
-      !this.isMineSet && this.setMinesToPlaces()
       this.renderField();
     })
   }
