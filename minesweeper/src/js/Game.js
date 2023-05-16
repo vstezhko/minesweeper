@@ -25,7 +25,7 @@ export class Game {
         };
       }
     }
-    console.log(this)
+
     this.createField()
     this.renderField()
     this.changeFlagsLeftInfo()
@@ -78,19 +78,23 @@ export class Game {
     }
   }
 
+  openCell(cell) {
+    if (!cell.opened) {
+      cell.opened = true
+      this.hideCells -= 1;
+    }
+  }
+
   checkCellsNearby(cell) {
 
     if (cell.minesNearby !== 0) {
-      cell.opened = true;
+      // this.openCell(cell)
       return
     }
 
     const {x, y} = cell;
     const b = x / this.settings.cellSize;
     const a = y / this.settings.cellSize;
-
-    console.log(a, b)
-    console.log(this.field[a][b])
 
     const checkingCells = [
       this.field[a - 1] !== undefined ? this.field[a - 1][b - 1] : undefined,
@@ -106,10 +110,10 @@ export class Game {
     checkingCells.forEach((cell) => {
       try {
         if (cell.minesNearby === 0 && !cell.opened) {
-          cell.opened = true;
+          this.openCell(cell)
           this.checkCellsNearby(cell)
         } else {
-          cell.opened = true;
+          this.openCell(cell)
         }
       } catch {}
     })
@@ -148,11 +152,10 @@ export class Game {
               this.changeClickCountInfo()
 
               if (!cell.tagged && !cell.opened) {
-                cell.opened = true;
+                this.openCell(cell)
 
                 !this.isMineSet && this.setMinesToPlaces() && this.checkCellsNearby(cell);
                 !cell.mined && this.checkCellsNearby(cell);
-
               }
 
               if (cell.mined) {
@@ -160,7 +163,6 @@ export class Game {
                 break
               }
 
-              this.hideCells -= 1;
               if (this.hideCells === this.settings.minesCount) {
                 endGame('win');
               }
