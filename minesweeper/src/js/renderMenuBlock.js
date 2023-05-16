@@ -1,4 +1,5 @@
 import settings from "./settings";
+import {Popup} from "./Popup";
 
 const renderMenuBlock = () => {
   const gameInfoLayout = document.createElement('div')
@@ -17,10 +18,16 @@ const renderMenuBlock = () => {
       </div>
       <div class="game-info_quick-settings">
         <img src="assets/img/volume_up_white_24dp.png" alt="volume">
-        <img src="assets/img/settings.png" alt="settings">
+        <img class="settings-icon" src="assets/img/settings.png" alt="settings">
       </div>
     `
   document.body.append(gameInfoLayout)
+
+  const settingsIcon = document.querySelector('.settings-icon')
+  settingsIcon.addEventListener('click', () => {
+    const settingsPopup = new Popup('settings', settings)
+    settingsPopup.renderPopup()
+  })
 }
 
 export default renderMenuBlock;
