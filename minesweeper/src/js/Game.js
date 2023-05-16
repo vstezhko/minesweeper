@@ -149,10 +149,9 @@ export class Game {
 
             if (event.button === 0) {
 
-              this.settings.clicksCount += 1
-              this.changeClickCountInfo()
-
               if (!cell.tagged && !cell.opened) {
+                this.settings.clicksCount += 1
+                this.changeClickCountInfo()
                 this.openCell(cell)
                 !cell.mined && playSound('click')
 
@@ -160,7 +159,7 @@ export class Game {
                 !cell.mined && this.checkCellsNearby(cell);
               }
 
-              if (cell.mined) {
+              if (cell.mined && !cell.tagged) {
                 playSound('lose')
                 endGame('lose');
                 break
