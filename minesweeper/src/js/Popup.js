@@ -5,6 +5,8 @@ import settings from "./settings";
 export class Popup {
   constructor(type) {
     this.type = type;
+    this.winTemplate = `You are win! Try again?`;
+    this.loseTemplate = `You are lose! Try again?`;
   }
 
   createPopup() {
@@ -12,7 +14,7 @@ export class Popup {
     popup.classList.add('popup')
     popup.innerHTML =
       `<div class="popup_body">
-        <h3>You are lose! Try again?</h3>
+        <h3>${ this.type === 'win' ? this.winTemplate : this.loseTemplate }</h3>
         <div class="popup_variants">
           <h5 class="new-game">Yes, start new game</h5>
           <h5 class="show-res">No, show results</h5>
@@ -27,7 +29,7 @@ export class Popup {
     document.body.removeChild(popup)
   }
 
-  renderPopup() {
+  renderPopup(result) {
     const popup = this.createPopup()
     document.body.append(popup)
 

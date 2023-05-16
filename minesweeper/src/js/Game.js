@@ -1,5 +1,5 @@
-import {loseGame} from "./loseGame";
 import {gameTime} from "./gameTime";
+import {endGame} from "./endGame";
 
 export class Game {
   constructor(settings) {
@@ -8,6 +8,7 @@ export class Game {
     this.context = null;
     this.canvas = null;
     this.isMineSet = false;
+    this.hideCells = settings.fieldSize * settings.fieldSize;
   }
 
   createNewGame() {
@@ -83,6 +84,11 @@ export class Game {
     this.context = this.canvas.getContext('2d');
     this.canvas.width = this.settings.cellSize * this.settings.fieldSize;
     this.canvas.height = this.settings.cellSize * this.settings.fieldSize;
+
+    this.canvas.addEventListener('dblclick', function(event) {
+      event.preventDefault();
+    });
+
     this.canvas.addEventListener('contextmenu', function (event) {
       event.preventDefault();
     });
@@ -105,7 +111,13 @@ export class Game {
               }
 
               if (cell.mined) {
-                loseGame()
+                endGame('lose');
+                break
+              }
+
+              this.hideCells -= 1;
+              if (this.hideCells === this.settings.minesCount) {
+                endGame('win');
               }
             }
 
