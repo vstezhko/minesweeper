@@ -10,6 +10,7 @@ export class Game {
     this.canvas = null;
     this.isMineSet = false;
     this.hideCells = settings.fieldSize * settings.fieldSize;
+    this.lastresults = JSON.parse(localStorage.getItem('lastResults')) || [];
   }
 
   createNewGame() {
@@ -89,7 +90,6 @@ export class Game {
   checkCellsNearby(cell) {
 
     if (cell.minesNearby !== 0) {
-      // this.openCell(cell)
       return
     }
 
@@ -163,6 +163,7 @@ export class Game {
                 playSound('lose')
                 this.openAllCells()
                 endGame('lose');
+                this.saveResult('lose')
                 break
               }
 
@@ -170,6 +171,7 @@ export class Game {
                 playSound('win')
                 this.openAllCells();
                 endGame('win');
+                this.saveResult('win')
               }
             }
 
@@ -260,6 +262,22 @@ export class Game {
       })
     })
     this.renderField();
+  }
+
+  saveResult(res) {
+    const result = {
+      fieldSize: this.settings.fieldSize ,
+      minesCount: this.settings.minesCount,
+      level: this.settings.level,
+      clicksCount: this.settings.clicksCount,
+      result: res,
+    }
+
+    this.lastresults.unshift(result)
+    if (this.lastresults.length >= 11) {
+      this.lastresults.pop()
+    }
+    localStorage.setItem('lastResults', JSON.stringify(this.lastresults))
   }
 
   changeFlagsLeftInfo() {
