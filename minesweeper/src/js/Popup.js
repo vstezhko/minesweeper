@@ -76,13 +76,13 @@ export class Popup {
     })
 
     const inputs = document.querySelectorAll('input');
-    inputs &&
-    inputs.forEach((input) => {
-      input.addEventListener('click', (e) => {
-        e.stopPropagation();
-        settings[e.target.id] = +e.target.value;
+    inputs.length &&
+      inputs.forEach((input) => {
+        input.addEventListener('click', (e) => {
+          e.stopPropagation();
+          settings[e.target.id] = +e.target.value;
+        })
       })
-    })
 
     const closeIcon = document.querySelector('.close-icon')
     closeIcon &&
@@ -91,9 +91,10 @@ export class Popup {
       startNewGame()
     })
 
-    inputs &&
-    popup.addEventListener('click', (e) => {
-      startNewGame()
-    })
+    inputs.length &&
+      popup.addEventListener('click', (e) => {
+        console.log(inputs)
+        startNewGame()
+      })
   }
 }
