@@ -161,12 +161,14 @@ export class Game {
 
               if (cell.mined && !cell.tagged) {
                 playSound('lose')
+                this.openAllCells()
                 endGame('lose');
                 break
               }
 
               if (this.hideCells === this.settings.minesCount) {
                 playSound('win')
+                this.openAllCells();
                 endGame('win');
               }
             }
@@ -249,6 +251,15 @@ export class Game {
         }
       }
     }
+  }
+
+  openAllCells() {
+    this.field.forEach((row) => {
+      row.forEach((item) => {
+        item.opened = true;
+      })
+    })
+    this.renderField();
   }
 
   changeFlagsLeftInfo() {
