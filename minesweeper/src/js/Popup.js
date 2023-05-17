@@ -74,33 +74,72 @@ export class Popup {
       `
     }
 
+    if (this.type === 'results') {
+      const results = JSON.parse(localStorage.getItem('lastResults')) || []
+      let resultsHTML = ''
+      if (results.length === 0) {
+        resultsHTML = '<h5>Результатов пока нет</h5>'
+      } else {
+          results.forEach(result => {
+            resultsHTML += `<li>${result.result}, level: ${result.level}, clicks: ${result.clicksCount}, field size: ${result.fieldSize}, minesCount: ${result.minesCount}</li>`
+        })
+      }
+
+      popup.innerHTML =
+        `
+          <div class="popup_body">
+            <img class="close-icon" src="assets/img/close_white_24dp.png" alt="close">
+            <h3>LAST 10 RESULTS</h3>
+            ${resultsHTML}
+          </div>
+        `
+    }
+
     return popup
   }
 
   removePopup() {
     const popup = document.querySelector('.popup')
+    popup &&
     document.body.removeChild(popup)
+  }
+
+  startNewGame()  {
+    this.removePopup()
+    document.body.removeChild(document.body.querySelector('canvas'))
+    document.body.removeChild(document.body.querySelector('.game-info'))
+    renderMenuBlock();
+    const newGame = new Game(settings);
+    newGame.createNewGame();
   }
 
   renderPopup() {
     const popup = this.createPopup()
     document.body.append(popup)
 
+    const popupBody = document.querySelector('.popup_body')
+    popupBody.addEventListener('click', (e) => {
+      e.stopPropagation()
+    })
+
+      popup.addEventListener('click', (e) => {
+      this.startNewGame()
+    })
+
     const newGameBtn = document.querySelector('.new-game')
     const showResBtn = document.querySelector('.show-res')
 
-    const startNewGame = () => {
-      this.removePopup()
-      document.body.removeChild(document.body.querySelector('canvas'))
-      document.body.removeChild(document.body.querySelector('.game-info'))
-      renderMenuBlock();
-      const newGame = new Game(settings);
-      newGame.createNewGame();
-    }
-
     newGameBtn &&
     newGameBtn.addEventListener('click', ()=>{
-      startNewGame()
+      this.startNewGame()
+    })
+
+    showResBtn &&
+    showResBtn.addEventListener('click', () => {
+      this.removePopup()
+      const resultsPopup = new Popup('results')
+      resultsPopup.createPopup()
+      resultsPopup.renderPopup()
     })
 
     const inputs = document.querySelectorAll('.input');
@@ -146,12 +185,12 @@ export class Popup {
     closeIcon &&
     closeIcon.addEventListener('click', (e) => {
       e.stopPropagation();
-      startNewGame()
+      this.startNewGame()
     })
 
     inputs.length &&
       popup.addEventListener('click', (e) => {
-        startNewGame()
+        this.startNewGame()
       })
   }
 }

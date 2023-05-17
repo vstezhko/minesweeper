@@ -110,10 +110,21 @@ export class Game {
 
     checkingCells.forEach((cell) => {
       try {
+
         if (cell.minesNearby === 0 && !cell.opened) {
+          if (cell.tagged){
+            cell.tagged = false;
+            this.settings.flagsLeft += 1;
+            this.changeFlagsLeftInfo()
+          }
           this.openCell(cell)
           this.checkCellsNearby(cell)
         } else {
+          if (cell.tagged){
+            cell.tagged = false;
+            this.settings.flagsLeft += 1;
+            this.changeFlagsLeftInfo()
+          }
           this.openCell(cell)
         }
       } catch {}
@@ -176,6 +187,7 @@ export class Game {
             }
 
             if (event.button === 2) {
+              console.log(cell)
               playSound('tick')
               if (this.settings.flagsLeft > 0 && !cell.tagged) {
                 cell.tagged = !cell.tagged;
