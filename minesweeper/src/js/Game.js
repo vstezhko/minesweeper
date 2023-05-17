@@ -189,14 +189,14 @@ export class Game {
             if (event.button === 2) {
               playSound('tick')
               if (this.settings.flagsLeft > 0 && !cell.tagged) {
-                cell.tagged = !cell.tagged;
+                cell.tagged = true;
                 this.settings.flagsLeft -= 1
                 this.changeFlagsLeftInfo()
                 break
               }
 
-              if (cell.tagged && this.settings.flagsLeft < 10) {
-                cell.tagged = !cell.tagged;
+              if (cell.tagged && this.settings.flagsLeft < this.settings.minesCount) {
+                cell.tagged = false;
                 this.settings.flagsLeft += 1
                 this.changeFlagsLeftInfo()
                 break
