@@ -187,7 +187,6 @@ export class Game {
             }
 
             if (event.button === 2) {
-              console.log(cell)
               playSound('tick')
               if (this.settings.flagsLeft > 0 && !cell.tagged) {
                 cell.tagged = !cell.tagged;

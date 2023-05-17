@@ -1,4 +1,10 @@
+import settings from "./settings";
+
 export const playSound = (type) => {
+
+  if (!settings.soundOn) {
+    return
+  }
 
   const sounds = {
     'click': 'assets/sounds/click.mp3',

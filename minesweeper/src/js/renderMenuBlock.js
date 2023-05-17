@@ -21,7 +21,8 @@ const renderMenuBlock = () => {
         </div>
       </div>
       <div class="game-info_quick-settings">
-        <img src="assets/img/volume_up_white_24dp.png" alt="volume">
+        <img class="volumeON-icon ${!settings.soundOn ? 'hidden' : ''}" src="assets/img/volume_up_white_24dp.png" alt="volume">
+        <img class="volumeOFF-icon ${settings.soundOn ? 'hidden' : ''}" src="assets/img/volume_off_white_24dp.png" alt="volume">
         <img class="settings-icon" src="assets/img/settings.png" alt="settings">
       </div>
     `
@@ -31,6 +32,21 @@ const renderMenuBlock = () => {
   settingsIcon.addEventListener('click', () => {
     const settingsPopup = new Popup('settings', settings)
     settingsPopup.renderPopup()
+  })
+
+  const volumeONIcon = document.querySelector('.volumeON-icon')
+  const volumeOFFIcon = document.querySelector('.volumeOFF-icon')
+
+  volumeONIcon.addEventListener('click', () => {
+    settings.soundOn = false;
+    volumeONIcon.classList.add('hidden')
+    volumeOFFIcon.classList.remove('hidden')
+  })
+
+  volumeOFFIcon.addEventListener('click', () => {
+    settings.soundOn = true;
+    volumeOFFIcon.classList.add('hidden')
+    volumeONIcon.classList.remove('hidden')
   })
 }
 
