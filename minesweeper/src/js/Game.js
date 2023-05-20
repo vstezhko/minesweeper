@@ -56,7 +56,7 @@ export class Game {
         this.context.fillStyle = color;
         this.context.fillRect(x, y, this.settings.cellSize, this.settings.cellSize);
 
-        this.context.strokeStyle = 'black';
+        this.context.strokeStyle = 'palevioletred';
         this.context.strokeRect(x, y, this.settings.cellSize, this.settings.cellSize);
 
         const flagImage = new Image();
@@ -68,7 +68,7 @@ export class Game {
 
         if (cell.opened && !cell.mined && cell.minesNearby > 0) {
           this.context.fillStyle = 'black';
-          this.context.font = '20px Arial';
+          this.context.font = '16px Arial';
           this.context.textAlign = 'center';
           this.context.textBaseline = 'middle';
 
@@ -160,6 +160,10 @@ export class Game {
 
             if (event.button === 0) {
 
+              if (cell.opened) {
+                return
+              }
+
               if (!cell.tagged && !cell.opened) {
                 this.settings.clicksCount += 1
                 this.changeClickCountInfo()
@@ -187,6 +191,11 @@ export class Game {
             }
 
             if (event.button === 2) {
+
+              if (cell.opened) {
+                return
+              }
+
               playSound('tick')
               if (this.settings.flagsLeft > 0 && !cell.tagged) {
                 cell.tagged = true;
@@ -273,6 +282,7 @@ export class Game {
       })
     })
     this.renderField();
+
   }
 
   saveResult(res) {

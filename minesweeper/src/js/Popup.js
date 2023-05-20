@@ -123,7 +123,7 @@ export class Popup {
     })
 
       popup.addEventListener('click', (e) => {
-      this.startNewGame()
+        this.type !== 'results' ? this.startNewGame() : this.removePopup()
     })
 
     const newGameBtn = document.querySelector('.new-game')
@@ -185,7 +185,7 @@ export class Popup {
     closeIcon &&
     closeIcon.addEventListener('click', (e) => {
       e.stopPropagation();
-      this.startNewGame()
+      this.type !== 'results' ? this.startNewGame() : this.removePopup()
     })
 
     inputs.length &&

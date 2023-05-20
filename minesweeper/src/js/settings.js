@@ -9,4 +9,4 @@ const settings = {
   soundOn: true,
 }
 
-export default settings;
+export default settings

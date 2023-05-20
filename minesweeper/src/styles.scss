@@ -1,6 +1,7 @@
 * {
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
 }
 
 html {
@@ -13,11 +14,14 @@ html {
 
 body {
   height: 100%;
-  width: 100%;
+  width: fit-content;
+  margin: 0 auto;
+  padding: 1rem;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  background-color: palevioletred;
 }
 
 p {
@@ -33,12 +37,8 @@ hr {
 
 .game-info {
   width: 100%;
-  padding: 2rem;
-  display: flex;
-  justify-content: center;
   gap: 3rem;
-  align-items: center;
-  background-color: palevioletred;
+  margin-bottom: 1rem;
 
   img {
     width: 3rem;
@@ -46,7 +46,33 @@ hr {
   }
 }
 
-.game-info_info {
+.title {
+  font-size: 2rem;
+}
+
+.game-info__container {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+
+  &:not(:last-child) {
+    margin-bottom: 1rem;
+  }
+}
+
+.game-info__game-settings {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  cursor: pointer;
+  transition: 0.3s;
+
+  &:hover {
+    transform: scale(1.05);
+  }
+}
+
+.game-info__info {
   display: flex;
   gap: 2rem;
 }
@@ -61,7 +87,7 @@ hr {
   img {
     width: 3rem;
     height: 3rem;
-    padding: 0 0.5rem;
+    margin: 0 0.5rem;
   }
 }
 
