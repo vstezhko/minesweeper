@@ -174,7 +174,7 @@ export class Game {
       }
 
       if (this.hideCells === this.settings.minesCount) {
-        console.log('win')
+        // console.log('win')
         playSound('win')
         this.openAllCells();
         endGame('win');

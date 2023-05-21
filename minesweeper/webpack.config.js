@@ -8,14 +8,11 @@ const ESLintPlugin = require('eslint-webpack-plugin');
 const mode = process.env.NODE_ENV || 'development';
 
 const devMode = mode === 'development'
-// console.log(process.env.NODE_ENV, mode)
-const target = devMode ? 'web' : 'browserslist';
 const devtool = devMode ? 'source-map' : false;
 
 
 module.exports = {
     mode,
-    target,
     devtool,
     devServer: {
         open: true,
