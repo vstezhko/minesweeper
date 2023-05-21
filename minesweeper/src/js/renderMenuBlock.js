@@ -18,6 +18,10 @@ const renderMenuBlock = () => {
           <img class="results-icon" src="assets/img/results_32.png" alt="results" title="last results">
         </div>
         <div class="game-info_quick-settings">
+          <img class="darkON-icon ${!settings.darkON ? 'hidden' : ''}" src="assets/img/light.png" alt="theme">
+          <img class="darkOFF-icon ${settings.darkON ? 'hidden' : ''}" src="assets/img/dark.png" alt="theme">
+        </div>
+        <div class="game-info_quick-settings">
           <img class="volumeON-icon ${!settings.soundOn ? 'hidden' : ''}" src="assets/img/volume_up_white_24dp.png" alt="volume">
           <img class="volumeOFF-icon ${settings.soundOn ? 'hidden' : ''}" src="assets/img/volume_off_white_24dp.png" alt="volume">
         </div>
@@ -59,6 +63,24 @@ const renderMenuBlock = () => {
     settings.soundOn = true;
     volumeOFFIcon.classList.add('hidden')
     volumeONIcon.classList.remove('hidden')
+  })
+
+  const darkONIcon = document.querySelector('.darkON-icon')
+  const darkOFFIcon = document.querySelector('.darkOFF-icon')
+
+  darkONIcon.addEventListener('click', () => {
+
+    settings.darkON = false;
+    document.body.classList.remove('dark')
+    darkONIcon.classList.add('hidden')
+    darkOFFIcon.classList.remove('hidden')
+  })
+
+  darkOFFIcon.addEventListener('click', () => {
+    settings.darkON = true;
+    document.body.classList.add('dark')
+    darkOFFIcon.classList.add('hidden')
+    darkONIcon.classList.remove('hidden')
   })
 
   const resultsIcon = document.querySelector('.results-icon')

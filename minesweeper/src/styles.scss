@@ -22,6 +22,18 @@ body {
   align-items: center;
   flex-direction: column;
   background-color: palevioletred;
+
+  &.dark {
+    background-color: #310212;
+
+    .popup_body {
+      background-color: #310212;
+
+      .input {
+        color: #310212;
+      }
+    }
+  }
 }
 
 p {
