@@ -78,7 +78,7 @@ export class Game {
         this.context.strokeRect(x, y, this.settings.cellSize, this.settings.cellSize);
 
         const flagImage = new Image();
-        flagImage.src = '/assets/img/flag_icon.png';
+        flagImage.src = './assets/img/flag_icon.png';
 
         if (cell.tagged) {
           this.context.drawImage(flagImage, x, y, this.settings.cellSize, this.settings.cellSize);
