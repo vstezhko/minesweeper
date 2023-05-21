@@ -51,7 +51,7 @@ export class Game {
     this.changeFlagsLeftInfo()
   }
 
-  renderField(mode = 'light'){
+  renderField(){
     for (let row = 0; row < this.columnSize; row++) {
       for (let col = 0; col < this.rowSize; col++) {
         const cell = this.field[row][col];
@@ -68,13 +68,13 @@ export class Game {
         }
 
         if (!cell.opened) {
-          color = 'lightgray';
+          color = settings.darkON ? 'darkgray' : 'lightgray';
         }
 
         this.context.fillStyle = color;
         this.context.fillRect(x, y, this.settings.cellSize, this.settings.cellSize);
 
-        this.context.strokeStyle = mode === 'dark' ? '#310212' : 'palevioletred';
+        this.context.strokeStyle = settings.darkON ? '#310212' : 'palevioletred';
         this.context.strokeRect(x, y, this.settings.cellSize, this.settings.cellSize);
 
         const flagImage = new Image();

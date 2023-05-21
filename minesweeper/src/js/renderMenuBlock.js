@@ -72,6 +72,7 @@ const renderMenuBlock = () => {
 
     settings.darkON = false;
     document.body.classList.remove('dark')
+    settings.game.renderField()
     darkONIcon.classList.add('hidden')
     darkOFFIcon.classList.remove('hidden')
   })
@@ -79,6 +80,7 @@ const renderMenuBlock = () => {
   darkOFFIcon.addEventListener('click', () => {
     settings.darkON = true;
     document.body.classList.add('dark')
+    settings.game.renderField()
     darkOFFIcon.classList.add('hidden')
     darkONIcon.classList.remove('hidden')
   })

@@ -22,5 +22,6 @@ window.onload = () => {
 
   renderMenuBlock()
   const game = new Game(settings);
+  settings.game = game;
   game.createNewGame()
 };
