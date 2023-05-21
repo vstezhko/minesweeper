@@ -220,6 +220,7 @@ export class Popup {
       (this.type !== 'results' && this.type !== 'chooseAction') ? this.startNewGame() : this.removePopup()
     })
 
+
     inputs.length &&
       this.popup.addEventListener('click', (e) => {
         this.startNewGame()
