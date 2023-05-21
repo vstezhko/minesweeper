@@ -230,6 +230,9 @@ export class Game {
           if (mouseX >= x && mouseX < x + this.settings.cellSize && mouseY >= y && mouseY < y + this.settings.cellSize) {
 
             if (this.settings.mobileMode) {
+              if ("vibrate" in navigator) {
+                navigator.vibrate(100);
+              }
               const actionPopup = new Popup('chooseAction', settings, cell)
               actionPopup.renderPopup(this)
             } else {
