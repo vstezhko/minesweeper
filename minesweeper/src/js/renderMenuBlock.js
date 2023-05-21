@@ -9,8 +9,7 @@ const renderMenuBlock = () => {
     <div class="game-info__container">
       <h1 class="title">Игра сапер</h1>
       <div class="game-info__game-settings">
-        <h5 class="title">Настроить новую игру</h5>
-        <img class="settings-icon hidden" src="assets/img/settings.png" alt="settings">
+        ${settings.mobileMode ? '<img class="settings-icon" src="assets/img/settings.png" alt="settings">' : '<h5 class="title">Настроить новую игру</h5>'}
       </div>
     </div>
     <div class="game-info__container">

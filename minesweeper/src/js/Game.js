@@ -1,6 +1,8 @@
 import {gameTime} from "./gameTime";
 import {endGame} from "./endGame";
 import {playSound} from "./playSound";
+import settings from "./settings";
+import {Popup} from "./Popup";
 
 export class Game {
   constructor(settings) {
@@ -11,12 +13,28 @@ export class Game {
     this.isMineSet = false;
     this.hideCells = settings.fieldSize * settings.fieldSize;
     this.lastresults = JSON.parse(localStorage.getItem('lastResults')) || [];
+    this.rowSize = null;
+    this.columnSize = null;
+  }
+
+  countAvailablePlaceForField() {
+    if (this.settings.mobileMode) {
+      const screenWidth = window.innerWidth;
+      this.settings.fieldCells = this.settings.fieldSize * this.settings.fieldSize;
+      this.rowSize = Math.floor((screenWidth-20)/settings.cellSize)
+      this.columnSize = Math.round(this.settings.fieldCells/this.rowSize)
+      this.hideCells = this.rowSize * this.columnSize
+    } else {
+      this.rowSize = this.settings.fieldSize
+      this.columnSize = this.settings.fieldSize
+    }
   }
 
   createNewGame() {
-    for (let row = 0; row < this.settings.fieldSize; row++) {
+    this.countAvailablePlaceForField()
+    for (let row = 0; row < this.columnSize; row++) {
       this.field[row] = [];
-      for (let col = 0; col < this.settings.fieldSize; col++) {
+      for (let col = 0; col < this.rowSize; col++) {
         this.field[row][col] = {
           x: col * this.settings.cellSize,
           y: row * this.settings.cellSize,
@@ -34,8 +52,8 @@ export class Game {
   }
 
   renderField(){
-    for (let row = 0; row < this.settings.fieldSize; row++) {
-      for (let col = 0; col < this.settings.fieldSize; col++) {
+    for (let row = 0; row < this.columnSize; row++) {
+      for (let col = 0; col < this.rowSize; col++) {
         const cell = this.field[row][col];
         const {x, y} = cell;
 
@@ -131,12 +149,65 @@ export class Game {
     })
   }
 
+  handleOpenCell(cell) {
+
+      if (cell.opened) {
+        return
+      }
+
+      if (!cell.tagged && !cell.opened) {
+        this.settings.clicksCount += 1
+        this.changeClickCountInfo()
+        this.openCell(cell)
+        !cell.mined && playSound('click')
+
+        !this.isMineSet && this.setMinesToPlaces() && this.checkCellsNearby(cell);
+        !cell.mined && this.checkCellsNearby(cell);
+      }
+
+      if (cell.mined && !cell.tagged) {
+        playSound('lose')
+        this.openAllCells()
+        endGame('lose');
+        this.saveResult('lose')
+        return
+      }
+
+      if (this.hideCells === this.settings.minesCount) {
+        console.log('win')
+        playSound('win')
+        this.openAllCells();
+        endGame('win');
+        this.saveResult('win')
+      }
+  }
+
+  handleFlag(cell) {
+    if (cell.opened) {
+      return
+    }
+
+    playSound('tick')
+    if (this.settings.flagsLeft > 0 && !cell.tagged) {
+      cell.tagged = true;
+      this.settings.flagsLeft -= 1
+      this.changeFlagsLeftInfo()
+      return
+    }
+
+    if (cell.tagged && this.settings.flagsLeft < this.settings.minesCount) {
+      cell.tagged = false;
+      this.settings.flagsLeft += 1
+      this.changeFlagsLeftInfo()
+    }
+  }
+
   createField() {
     this.canvas = document.createElement('canvas');
     document.body.append(this.canvas)
     this.context = this.canvas.getContext('2d');
-    this.canvas.width = this.settings.cellSize * this.settings.fieldSize;
-    this.canvas.height = this.settings.cellSize * this.settings.fieldSize;
+    this.canvas.width = this.settings.cellSize * this.rowSize;
+    this.canvas.height = this.settings.cellSize * this.columnSize;
 
     this.canvas.addEventListener('dblclick', function(event) {
       event.preventDefault();
@@ -151,68 +222,25 @@ export class Game {
       const mouseX = event.clientX - rect.left;
       const mouseY = event.clientY - rect.top;
 
-      for (let row = 0; row < this.settings.fieldSize; row++) {
-        for (let col = 0; col < this.settings.fieldSize; col++) {
+      for (let row = 0; row < this.columnSize; row++) {
+        for (let col = 0; col < this.rowSize; col++) {
           const cell = this.field[row][col];
           const {x, y} = cell;
 
           if (mouseX >= x && mouseX < x + this.settings.cellSize && mouseY >= y && mouseY < y + this.settings.cellSize) {
 
-            if (event.button === 0) {
-
-              if (cell.opened) {
-                return
+            if (this.settings.mobileMode) {
+              const actionPopup = new Popup('chooseAction', settings, cell)
+              actionPopup.renderPopup(this)
+            } else {
+              if (event.button === 0) {
+                this.handleOpenCell(cell)
               }
 
-              if (!cell.tagged && !cell.opened) {
-                this.settings.clicksCount += 1
-                this.changeClickCountInfo()
-                this.openCell(cell)
-                !cell.mined && playSound('click')
-
-                !this.isMineSet && this.setMinesToPlaces() && this.checkCellsNearby(cell);
-                !cell.mined && this.checkCellsNearby(cell);
-              }
-
-              if (cell.mined && !cell.tagged) {
-                playSound('lose')
-                this.openAllCells()
-                endGame('lose');
-                this.saveResult('lose')
-                break
-              }
-
-              if (this.hideCells === this.settings.minesCount) {
-                playSound('win')
-                this.openAllCells();
-                endGame('win');
-                this.saveResult('win')
+              if (event.button === 2) {
+                this.handleFlag(cell)
               }
             }
-
-            if (event.button === 2) {
-
-              if (cell.opened) {
-                return
-              }
-
-              playSound('tick')
-              if (this.settings.flagsLeft > 0 && !cell.tagged) {
-                cell.tagged = true;
-                this.settings.flagsLeft -= 1
-                this.changeFlagsLeftInfo()
-                break
-              }
-
-              if (cell.tagged && this.settings.flagsLeft < this.settings.minesCount) {
-                cell.tagged = false;
-                this.settings.flagsLeft += 1
-                this.changeFlagsLeftInfo()
-                break
-              }
-            }
-
-            break;
           }
         }
       }
@@ -226,17 +254,18 @@ export class Game {
     this.isMineSet = true;
     let minesToPlace = this.settings.minesCount;
     while (minesToPlace > 0) {
-      const row = Math.floor(Math.random() * this.settings.fieldSize);
-      const col = Math.floor(Math.random() * this.settings.fieldSize);
+      const row = Math.floor(Math.random() * this.columnSize);
+      const col = Math.floor(Math.random() * this.rowSize);
 
       if (!this.field[row][col].mined && !this.field[row][col].opened) {
         this.field[row][col].mined = true;
+        console.log(row, col)
         minesToPlace--;
       }
     }
 
-    for (let row = 0; row < this.settings.fieldSize; row++) {
-      for (let col = 0; col < this.settings.fieldSize; col++) {
+    for (let row = 0; row < this.columnSize; row++) {
+      for (let col = 0; col < this.rowSize; col++) {
         const checkingCell = this.field[row][col];
         checkingCell.minesNearby = 0;
 
@@ -248,7 +277,7 @@ export class Game {
           checkingCell.minesNearby += 1;
         }
 
-        if (row > 0 && col < this.settings.fieldSize - 1 && this.field[row - 1][col + 1].mined) {
+        if (row > 0 && col < this.rowSize - 1 && this.field[row - 1][col + 1].mined) {
           checkingCell.minesNearby += 1;
         }
 
@@ -256,19 +285,19 @@ export class Game {
           checkingCell.minesNearby += 1;
         }
 
-        if (col < this.settings.fieldSize - 1 && this.field[row][col + 1].mined) {
+        if (col < this.rowSize - 1 && this.field[row][col + 1].mined) {
           checkingCell.minesNearby += 1;
         }
 
-        if (row < this.settings.fieldSize - 1 && col > 0 && this.field[row + 1][col - 1].mined) {
+        if (row < this.columnSize - 1 && col > 0 && this.field[row + 1][col - 1].mined) {
           checkingCell.minesNearby += 1;
         }
 
-        if (row < this.settings.fieldSize - 1 && this.field[row + 1][col].mined) {
+        if (row < this.columnSize - 1 && this.field[row + 1][col].mined) {
           checkingCell.minesNearby += 1;
         }
 
-        if (row < this.settings.fieldSize - 1 && col < this.settings.fieldSize - 1 && this.field[row + 1][col + 1].mined) {
+        if (row < this.columnSize - 1 && col < this.rowSize - 1 && this.field[row + 1][col + 1].mined) {
           checkingCell.minesNearby += 1;
         }
       }

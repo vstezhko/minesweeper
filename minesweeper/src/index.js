@@ -5,8 +5,12 @@ import settings from "./js/settings";
 import {Game} from "./js/Game";
 
 window.onload = () => {
-  renderMenuBlock()
 
+  if (window.innerWidth < 500) {
+    settings.mobileMode = true;
+  }
+
+  renderMenuBlock()
   const game = new Game(settings);
   game.createNewGame()
 };

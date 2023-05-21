@@ -1,6 +1,7 @@
 import renderMenuBlock from "./renderMenuBlock";
 import settings from "./settings";
 import {Game} from "./Game";
+import {logPlugin} from "@babel/preset-env/lib/debug";
 
 const levels = {
   'easy': {
@@ -21,28 +22,30 @@ const levels = {
 }
 
 export class Popup {
-  constructor(type, settings = null) {
+  constructor(type, settings = null, cell = null) {
     this.type = type;
+    this.cell = cell;
     this.settings = settings;
     this.winTemplate = `You are win! Try again?`;
     this.loseTemplate = `You are lose! Try again?`;
+    this.popup = null;
   }
 
   createPopup() {
     const popup = document.createElement('div')
     popup.classList.add('popup')
 
-    if (this.type !== 'settings') {
+    if (this.type === 'win' || this.type === 'lose') {
       popup.innerHTML =
         `
-      <div class="popup_body">
-        <h3>${ this.type === 'win' ? this.winTemplate : this.loseTemplate }</h3>
-        <div class="popup_variants">
-          <h5 class="new-game">Yes, start new game</h5>
-          <h5 class="show-res">No, show results</h5>
+        <div class="popup_body">
+          <h3>${ this.type === 'win' ? this.winTemplate : this.loseTemplate }</h3>
+          <div class="popup_variants">
+            <h5 class="new-game">Yes, start new game</h5>
+            <h5 class="show-res">No, show results</h5>
+          </div>
         </div>
-      </div>
-      `
+        `
     }
 
     if (this.type === 'settings') {
@@ -95,6 +98,18 @@ export class Popup {
         `
     }
 
+    if (this.type === 'chooseAction') {
+      popup.innerHTML =
+        `
+        <div class="popup_body">
+          <div class="popup_variants">
+            <h5 class="openCell">open cell</h5>
+            <h5 class="flagCell">toggle flag</h5>
+          </div>
+        </div>
+        `
+    }
+
     return popup
   }
 
@@ -113,17 +128,18 @@ export class Popup {
     newGame.createNewGame();
   }
 
-  renderPopup() {
-    const popup = this.createPopup()
-    document.body.append(popup)
+  renderPopup(game) {
+    this.popup = this.createPopup()
+    document.body.append(this.popup)
 
     const popupBody = document.querySelector('.popup_body')
-    popupBody.addEventListener('click', (e) => {
-      e.stopPropagation()
-    })
+    popupBody &&
+      popupBody.addEventListener('click', (e) => {
+        e.stopPropagation()
+      })
 
-      popup.addEventListener('click', (e) => {
-        this.type !== 'results' ? this.startNewGame() : this.removePopup()
+      this.popup.addEventListener('click', (e) => {
+        (this.type !== 'results' && this.type !== 'chooseAction') ? this.startNewGame() : this.removePopup()
     })
 
     const newGameBtn = document.querySelector('.new-game')
@@ -141,6 +157,22 @@ export class Popup {
       resultsPopup.createPopup()
       resultsPopup.renderPopup()
     })
+
+    const openCell = document.querySelector('.openCell')
+    openCell &&
+      openCell.addEventListener('click', () => {
+        game.handleOpenCell(this.cell)
+        game.renderField()
+        this.removePopup()
+      })
+
+    const flagCell = document.querySelector('.flagCell')
+    flagCell &&
+      flagCell.addEventListener('click', () => {
+        game.handleFlag(this.cell)
+        game.renderField()
+        this.removePopup()
+      })
 
     const inputs = document.querySelectorAll('.input');
     inputs.length &&
@@ -185,11 +217,11 @@ export class Popup {
     closeIcon &&
     closeIcon.addEventListener('click', (e) => {
       e.stopPropagation();
-      this.type !== 'results' ? this.startNewGame() : this.removePopup()
+      (this.type !== 'results' && this.type !== 'chooseAction') ? this.startNewGame() : this.removePopup()
     })
 
     inputs.length &&
-      popup.addEventListener('click', (e) => {
+      this.popup.addEventListener('click', (e) => {
         this.startNewGame()
       })
   }

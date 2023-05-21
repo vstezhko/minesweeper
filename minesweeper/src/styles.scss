@@ -39,6 +39,7 @@ hr {
   width: 100%;
   gap: 3rem;
   margin-bottom: 1rem;
+  overflow: hidden;
 
   img {
     width: 3rem;
@@ -160,6 +161,7 @@ hr {
   gap: 1rem;
 
   h5 {
+    font-size: 2rem;
     transition: 0.3s;
     cursor: pointer;
   }
