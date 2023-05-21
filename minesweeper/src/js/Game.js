@@ -18,10 +18,10 @@ export class Game {
   }
 
   countAvailablePlaceForField() {
-    if (this.settings.mobileMode) {
+    if (this.settings.needToAdopt) {
       const screenWidth = window.innerWidth;
       this.settings.fieldCells = this.settings.fieldSize * this.settings.fieldSize;
-      this.rowSize = Math.floor((screenWidth-20)/settings.cellSize)
+      this.rowSize = Math.floor((screenWidth-10)/settings.cellSize)
       this.columnSize = Math.round(this.settings.fieldCells/this.rowSize)
       this.hideCells = this.rowSize * this.columnSize
     } else {
@@ -230,9 +230,6 @@ export class Game {
           if (mouseX >= x && mouseX < x + this.settings.cellSize && mouseY >= y && mouseY < y + this.settings.cellSize) {
 
             if (this.settings.mobileMode) {
-              if ("vibrate" in navigator) {
-                navigator.vibrate(100);
-              }
               const actionPopup = new Popup('chooseAction', settings, cell)
               actionPopup.renderPopup(this)
             } else {

@@ -60,7 +60,7 @@ export class Popup {
               <option value="easy" ${settings.level === 'easy' ? 'selected' : ''}>easy</option>
               <option value="medium" ${settings.level === 'medium' ? 'selected' : ''}>medium</option>
               <option value="hard" ${settings.level === 'hard' ? 'selected' : ''}>hard</option>
-              <option value="custom" ${settings.level === 'custom' ? 'selected' : ''}>custom</option>
+              <option value="custom" disabled ${settings.level === 'custom' ? 'selected' : ''}>custom</option>
             </select> 
             
             <hr>
@@ -184,6 +184,14 @@ export class Popup {
 
           input.addEventListener('change', (e) => {
             if (input.nodeName === 'INPUT') {
+              if (e.target.id === 'fieldSize' && e.target.value > 25) {
+                e.target.value = settings.fieldSize
+              }
+
+              if (e.target.id === 'minesCount' && (e.target.value >= settings.fieldCells*0.6 || e.target.value >= 99)) {
+                e.target.value = settings.minesCount
+              }
+
               settings[e.target.id] = +e.target.value;
               settings.flagsLeft = settings.minesCount;
               settings.level = 'custom';

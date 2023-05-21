@@ -1,5 +1,6 @@
 const settings = {
   mobileMode: false,
+  needToAdopt: false,
   fieldSize: 10,
   fieldCells: 100,
   cellSize: 40,

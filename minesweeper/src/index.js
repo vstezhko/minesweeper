@@ -6,8 +6,18 @@ import {Game} from "./js/Game";
 
 window.onload = () => {
 
-  if (window.innerWidth < 500) {
+  function hasTouchScreen() {
+    return ('maxTouchPoints' in navigator && navigator.maxTouchPoints > 0) || ('msMaxTouchPoints' in navigator && navigator.msMaxTouchPoints > 0);
+  }
+
+  const isTouchScreen = hasTouchScreen();
+
+  if (isTouchScreen) {
     settings.mobileMode = true;
+  }
+
+  if (window.innerWidth <= 500) {
+    settings.needToAdopt = true
   }
 
   renderMenuBlock()
